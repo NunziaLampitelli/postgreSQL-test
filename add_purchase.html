@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <title>Add a purchase</title>
+  <link rel="stylesheet" href="add_purchase.css">
+</head>
+<body>
+
+  <h1>Add a purchase</h1>
+
+  <label for="user">Select a user:</label>
+  <select id="userSelect"></select>
+
+  <label for="product">Select a product:</label>
+  <select id="productSelect"></select>
+
+  <button id="submitBtn">Register shop</button>
+
+  <p id="message"></p>
+
+  <script>
+    async function fetchOptions() {
+      const [usersRes, productsRes] = await Promise.all([
+        fetch('api_get_users.php'),
+        fetch('api_get_products.php')
+      ]);
+
+      const users = await usersRes.json();
+      const products = await productsRes.json();
+
+      const userSelect = document.getElementById('userSelect');
+      users.forEach(u => {
+        const option = document.createElement('option');
+        option.value = u.id;
+        option.textContent = u.name;
+        userSelect.appendChild(option);
+      });
+
+      const productSelect = document.getElementById('productSelect');
+      products.forEach(p => {
+        const option = document.createElement('option');
+        option.value = p.id;
+        option.textContent = p.name;
+        productSelect.appendChild(option);
+      });
+    }
+
+    document.getElementById('submitBtn').addEventListener('click', async () => {
+      const userId = document.getElementById('userSelect').value;
+      const productId = document.getElementById('productSelect').value;
+
+      const res = await fetch('api_add_purchase.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: userId, product_id: productId })
+      });
+
+      const result = await res.json();
+      document.getElementById('message').textContent = result.message;
+    });
+
+    fetchOptions();
+  </script>
+
+</body>
+</html>

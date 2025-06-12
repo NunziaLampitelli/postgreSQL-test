@@ -3,6 +3,11 @@ body {
 	flex-direction: column;
 	justify-content: center;
   align-items: center;
+	font-family: Arial;
+}
+
+.user {
+	margin-block: 15px;
 }
 
 .purchase-table {

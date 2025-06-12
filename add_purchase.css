@@ -1,0 +1,9 @@
+body {
+	font-family: sans-serif;
+	padding: 2em;
+}
+
+label, select, button {
+	display: block;
+	margin-bottom: 1em;
+}
